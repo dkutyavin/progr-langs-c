@@ -23,15 +23,6 @@ end
 class MyTetris < Tetris
   # your enhancements here
   # creates the window and starts the game
-  def initialize
-    @root = TetrisRoot.new
-    @timer = TetrisTimer.new
-    set_board
-    @running = true
-    key_bindings
-    buttons
-    run_game
-  end
 
   def set_board
     @canvas = TetrisCanvas.new
