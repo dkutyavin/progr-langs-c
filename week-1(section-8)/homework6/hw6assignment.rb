@@ -7,8 +7,8 @@ class MyPiece < Piece
   # The constant All_My_Pieces should be declared here
   All_My_Pieces = All_Pieces + 
                   [rotations([[0, 0], [1, 0], [0, 1], [1, 1], [2, 1]]), # axe
-                  [[[0, 0], [-1, 0], [1, 0], [2, 0], [3, 0]]], # extra long (we need only 2)
-                  [[[0, 0], [0, -1], [0, 1], [0, 2], [0, 3]]],
+                  [[[0, 0], [-1, 0], [1, 0], [2, 0], [3, 0]],
+                   [[0, 0], [0, -1], [0, 1], [0, 2], [0, 3]]], # extra long (we need only 2)
                   rotations([[0, 0], [1, 0], [0, -1]])] # little L
   # your enhancements here
 
