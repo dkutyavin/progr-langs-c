@@ -22,6 +22,7 @@ class MyBoard < Board
   # your enhancements here
   def initialize (game)
     super
+    @cheating = false
     @current_block = MyPiece.next_piece(self)
   end
 
@@ -40,7 +41,13 @@ class MyBoard < Board
   end
 
   def next_piece
-    @current_block = MyPiece.next_piece(self)
+    if @cheating
+      @current_block = MyPiece.new([[0, 0]], self)
+      @cheating = false
+    else 
+      @current_block = MyPiece.next_piece(self)
+    end
+
     @current_pos = nil
   end
 
@@ -50,6 +57,14 @@ class MyBoard < Board
     end
     draw
   end
+
+  def use_cheat
+    if !game_over? and @game.is_running? and !@cheating and @score > 100
+      @score -= 100
+      @cheating = true
+    end
+  end
+
 end
 
 class MyTetris < Tetris
@@ -67,6 +82,7 @@ class MyTetris < Tetris
   def key_bindings  
     super
     @root.bind("u", proc {@board.rotate_180})
+    @root.bind("c", proc {@board.use_cheat})
   end
 end
 
