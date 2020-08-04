@@ -42,7 +42,7 @@ class MyBoard < Board
 
   def next_piece
     if @cheating
-      @current_block = MyPiece.new([[0, 0]], self)
+      @current_block = MyPiece.new([[[0, 0]]], self)
       @cheating = false
     else 
       @current_block = MyPiece.next_piece(self)
