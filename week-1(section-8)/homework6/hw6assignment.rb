@@ -59,7 +59,7 @@ class MyBoard < Board
   end
 
   def use_cheat
-    if !game_over? and @game.is_running? and !@cheating and @score > 100
+    if !game_over? and @game.is_running? and !@cheating and @score >= 100
       @score -= 100
       @cheating = true
     end
