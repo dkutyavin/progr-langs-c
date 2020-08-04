@@ -5,13 +5,11 @@
 
 class MyPiece < Piece
   # The constant All_My_Pieces should be declared here
-  All_My_Pieces = [rotations([[0, 0], [1, 0], [0, -1]])]
-
-  # All_My_Pieces = All_Pieces + 
-  #                 [rotations([[0, 0], [1, 0], [0, 1], [1, 1], [2, 1]]), # axe
-  #                 [[[0, 0], [-1, 0], [1, 0], [2, 0], [3, 0]]], # extra long (we need only 2)
-  #                 [[[0, 0], [0, -1], [0, 1], [0, 2], [0, 3]]],
-  #                 rotations([[0, 0], [1, 0], [0, -1]])] # little L
+  All_My_Pieces = All_Pieces + 
+                  [rotations([[0, 0], [1, 0], [0, 1], [1, 1], [2, 1]]), # axe
+                  [[[0, 0], [-1, 0], [1, 0], [2, 0], [3, 0]]], # extra long (we need only 2)
+                  [[[0, 0], [0, -1], [0, 1], [0, 2], [0, 3]]],
+                  rotations([[0, 0], [1, 0], [0, -1]])] # little L
   # your enhancements here
 
   def self.next_piece (board)
