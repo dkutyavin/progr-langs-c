@@ -197,4 +197,13 @@ fun eval_prog (e,env) =
       | Intersect(e1,e2) => intersect(eval_prog(e1,env), eval_prog(e2, env))
 (* CHANGE: Add a case for Shift expressions *)
 
-(* CHANGE: Add function preprocess_prog of type geom_exp -> geom_exp *)
+fun preprocess_prog exp =
+  case exp of
+	  LineSegment (x1, y1, x2, y2) => if real_close_point (x1, y1) (x2, y2)
+		                                then Point(x1, y1)
+																		else if real_close (x1, x2)
+																		     then if y1 < y2 then exp
+																				      else LineSegment(x2, y2, x1, y1)
+																				 else if x1 < x2 then exp
+																				      else LineSegment(x2, y2, x1, y1)
+	  | _ => exp
