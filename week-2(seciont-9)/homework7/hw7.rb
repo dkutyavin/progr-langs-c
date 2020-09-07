@@ -274,7 +274,7 @@ class Let < GeometryExpression
   end
 
   def eval_prog env
-    @e2.preprocess_prog.eval_prog(env + [[@s, @e1.preprocess_prog]])
+    @e2.preprocess_prog.eval_prog([[@s, @e1.preprocess_prog]] + env)
   end
 end
 
