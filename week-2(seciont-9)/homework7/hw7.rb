@@ -124,6 +124,22 @@ class Point < GeometryValue
   def shift(dx, dy)
     Point.new(@x + dx, @y + dy)
   end
+
+  def intersect other
+    other.intersectPoint self
+  end
+
+  def intersectPoint p
+    real_close_point(self.x, self.y, p.x, p.y) ? self : NoPoints.new
+  end
+
+  def intersectLine line
+    real_close(self.y, line.m * self.x + line.b) ? self : NoPoints.new
+  end
+
+  def intersectVerticalLine vline
+    real_close(self.x, vline.x) ? self : NoPoints.new
+  end
 end
 
 class Line < GeometryValue
@@ -138,6 +154,28 @@ class Line < GeometryValue
   def shift(dx, dy)
     Line.new(@m, @b + dy - @m * dx)
   end
+
+  def intersect other
+    other.intersectLine self
+  end
+
+  def intersectPoint p
+    p.intersectLine self
+  end
+
+  def intersectLine line
+    if real_close(self.m, line.m)
+      real_close(self.b, line.b) ? self : NoPoints.new
+    else
+      x = (line.b - self.b) / (self.m - line.m)
+      y = self.m * x + self.b
+      Point.new(x, y)
+    end
+  end
+
+  def intersectVerticalLine vline
+    Point.new(vline.x, self.m * vline.x + self.b)
+  end
 end
 
 class VerticalLine < GeometryValue
@@ -151,6 +189,23 @@ class VerticalLine < GeometryValue
   def shift (dx, dy)
     VerticalLine.new(@x + dx)
   end
+
+  def intersect other
+    other.intersectVerticalLine self
+  end
+
+  def intersectPoint p
+    p.intersectVerticalLine self
+  end
+
+  def intersectLine line
+    line.intersectVerticalLine self
+  end
+
+  def intersectVerticalLine vline
+    real_close(self.x, vline.x) ? self : NoPoints.new
+  end
+  
 end
 
 class LineSegment < GeometryValue
@@ -165,6 +220,10 @@ class LineSegment < GeometryValue
     @y1 = y1
     @x2 = x2
     @y2 = y2
+  end
+
+  def intersect other
+    intersectLineSegment self
   end
 
   def preprocess_prog
@@ -189,6 +248,14 @@ class Intersect < GeometryExpression
   def initialize(e1,e2)
     @e1 = e1
     @e2 = e2
+  end
+
+  def preprocess_prog
+    Intersect.new(e1.preprocess_prog, e2.preprocess_prog)
+  end
+
+  def eval_prog
+    e1.intersect(e2)
   end
 end
 
