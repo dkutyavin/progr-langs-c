@@ -199,7 +199,7 @@ fun eval_prog (e,env) =
 																				NoPoints => exp
 																				| Point(x, y) => Point(x + deltaX, y + deltaY)
 																				| Line(m, b) => Line(m, b + deltaY - m * deltaX)
-																				| VerticalLine(y) => VerticalLine(y + deltaY)
+																				| VerticalLine(x) => VerticalLine(x + deltaX)
 																				| LineSegment(x1, y1, x2, y2) => LineSegment(x1 + deltaX, y1 + deltaY, x2 + deltaX, y2 + deltaY)
 																				| _ => eval_prog (Shift(deltaX, deltaY, eval_prog (exp, env)), env)
 
