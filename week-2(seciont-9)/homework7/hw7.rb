@@ -120,6 +120,10 @@ class Point < GeometryValue
     @x = x
     @y = y
   end
+
+  def shift(dx, dy)
+    Point.new(@x + dx, @y + dy)
+  end
 end
 
 class Line < GeometryValue
@@ -130,6 +134,10 @@ class Line < GeometryValue
     @m = m
     @b = b
   end
+
+  def shift(dx, dy)
+    Line.new(@m, @b + dy - @m * dx)
+  end
 end
 
 class VerticalLine < GeometryValue
@@ -138,6 +146,10 @@ class VerticalLine < GeometryValue
   attr_reader :x
   def initialize x
     @x = x
+  end
+
+  def shift (dx, dy)
+    VerticalLine.new(@x + dx)
   end
 end
 
@@ -162,6 +174,10 @@ class LineSegment < GeometryValue
       y1 < y2 ? self : LineSegment.new(x2, y2, x1, y1)
     else x1 < x2 ? self : LineSegment.new(x2, y2, x1, y1)
     end
+  end
+
+  def shift (dx, dy)
+    LineSegment.new(@x1 + dx, @y1 + dy, @x2 + dx, @y2 + dy)
   end
 end
 
