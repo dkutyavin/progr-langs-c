@@ -72,6 +72,10 @@ class GeometryValue
   def preprocess_prog
     self # we need preprocessing only for LineSegment, override it in there
   end
+
+  def eval_prog env 
+    self # all values evaluate to self
+  end
 end
 
 class NoPoints < GeometryValue
@@ -81,9 +85,6 @@ class NoPoints < GeometryValue
   # However, you *may* move methods from here to a superclass if you wish to
 
   # Note: no initialize method only because there is nothing it needs to do
-  def eval_prog env 
-    self # all values evaluate to self
-  end
   def shift(dx,dy)
     self # shifting no-points is no-points
   end
@@ -186,7 +187,11 @@ class Let < GeometryExpression
   end
 
   def preprocess_prog
-    Let.new(s, e1.preprocess_prog, e2.preprocess_prog)
+    Let.new(@s, @e1.preprocess_prog, @e2.preprocess_prog)
+  end
+
+  def eval_prog env
+    @e2.preprocess_prog.eval_prog(env + [[@s, @e1.preprocess_prog]])
   end
 end
 
@@ -217,6 +222,10 @@ class Shift < GeometryExpression
   end
 
   def preprocess_prog
-    Shift.new(dx, dy, e.preprocess_prog)
+    Shift.new(@dx, @dy, @e.preprocess_prog)
+  end
+
+  def eval_prog
+    @e.shift(dx, dy)
   end
 end
