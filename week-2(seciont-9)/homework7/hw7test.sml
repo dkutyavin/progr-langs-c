@@ -68,3 +68,39 @@ in
 	then (print "eval_prog with shadowing 'a' in environment is working properly\n")
 	else (print "eval_prog with shadowing 'a' in environment is not working properly\n")
 end;
+
+(* Falled autograder tests *)
+let
+  val Intersect(p1, p2) = preprocess_prog (Intersect(LineSegment(~3.7,1.5,~3.7,1.5),LineSegment(~3.7,1.5,~3.7,1.5)))
+	val Point(a, b) = p1
+	val Point(c, d) = p2
+	val Point(e,f) = Point(~3.7, 1.5)
+in
+  if real_equal(a, c) andalso real_equal(a, e) andalso real_equal(b, d) andalso real_equal(b, f)
+	then (print "preprocess inside Intersect is working correctly\n")
+	else (print "preprocess inside Intersect is not working correctly\n")
+end;
+
+let
+  val Let(s, e1, e2 ) = preprocess_prog (Let("x",LineSegment(~3.7,1.5,~3.7,1.5),LineSegment(~3.7,1.5,~3.7,1.5)))
+	val Point(a, b) = e1
+	val Point(c, d) = e2
+
+	val Point(e,f) = Point(~3.7, 1.5)
+in
+	if real_equal(a, c) andalso real_equal(a, e) andalso real_equal(b, d) andalso real_equal(b, f)
+	then (print "preprocess inside Let is working correctly\n")
+	else (print "preprocess inside Let is not working correctly\n")
+end;
+
+(* Shift(5.5,~1.2,LineSegment(~3.7,1.5,~3.7,1.5)) *)
+
+let
+  val Shift(dx, dy, p) = preprocess_prog (Shift(5.5,~1.2,LineSegment(~3.7,1.5,~3.7,1.5)))
+	val Point(a, b) = p
+	val Point(c,d) = Point(~3.7, 1.5)
+in
+  if real_equal(a, c) andalso real_equal(b, d)
+	then (print "preprocess inside Shift is working correctly\n")
+	else (print "preprocess inside Shift is not working correctly\n")
+end;

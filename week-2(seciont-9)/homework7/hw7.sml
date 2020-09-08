@@ -203,7 +203,7 @@ fun eval_prog (e,env) =
 																				| LineSegment(x1, y1, x2, y2) => LineSegment(x1 + deltaX, y1 + deltaY, x2 + deltaX, y2 + deltaY)
 																				| _ => eval_prog (Shift(deltaX, deltaY, eval_prog (exp, env)), env)
 
-fun preprocess_prog exp =
+fun preprocess_prog (exp : geom_exp) =
   case exp of
 	  LineSegment (x1, y1, x2, y2) => if real_close_point (x1, y1) (x2, y2)
 		                                then Point(x1, y1)
@@ -212,4 +212,7 @@ fun preprocess_prog exp =
 																				      else LineSegment(x2, y2, x1, y1)
 																				 else if x1 < x2 then exp
 																				      else LineSegment(x2, y2, x1, y1)
+		| Intersect (e1, e2) => Intersect(preprocess_prog e1, preprocess_prog e2)
+		| Let (s, e1, e2) => Let(s, preprocess_prog e1, preprocess_prog e2)
+		| Shift (dx, dy, e) => Shift(dx, dy, preprocess_prog e)
 	  | _ => exp
