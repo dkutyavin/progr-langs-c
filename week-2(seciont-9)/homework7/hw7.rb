@@ -150,7 +150,8 @@ class Point < GeometryValue
   end
 
   def intersectWithSegmentAsLineResult seg
-    inbetween(self.x, seg.x1, seg.x2) and inbetween(self.y, seg.y1, seg.y2) ? self : NoPoints.new
+    is_on_seg = inbetween(self.x, seg.x1, seg.x2) and inbetween(self.y, seg.y1, seg.y2)
+    is_on_seg ? self : NoPoints.new
   end
 end
 
