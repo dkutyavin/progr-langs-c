@@ -267,7 +267,7 @@ class LineSegment < GeometryValue
     line.intersectLineSegment self
   end
 
-  def intersect vline
+  def intersectVerticalLine vline
     vline.intersectLineSegment self
   end
 
@@ -308,7 +308,7 @@ class LineSegment < GeometryValue
       elsif left_seg.x2 > right_seg.x2
         right_seg
       # overlap
-      else LineSegment(right_seg.x1, right_seg.y1, left_seg.x2, left_seg.y2)
+      else LineSegment.new(right_seg.x1, right_seg.y1, left_seg.x2, left_seg.y2)
       end
     end
   end
@@ -351,7 +351,7 @@ class Let < GeometryExpression
   end
 
   def eval_prog env
-    @e2.preprocess_prog.eval_prog([[@s, @e1.preprocess_prog]] + env)
+    @e2.preprocess_prog.eval_prog([[@s, @e1.preprocess_prog.eval_prog(env)]] + env)
   end
 end
 
@@ -386,6 +386,6 @@ class Shift < GeometryExpression
   end
 
   def eval_prog env
-    @e.shift(@dx, @dy).eval_prog(env)
+    @e.preprocess_prog.eval_prog(env).shift(@dx, @dy)
   end
 end
