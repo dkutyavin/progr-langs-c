@@ -23,10 +23,15 @@ class Character
     @hp = @hp + potion.hp
   end
 
+  def armor_up armor
+    # you should implement special logic for classes, who can use armor
+    self
+  end
+
   private
 
   def play_out_encounter enc
-    raise "You should implement `play_out_encounter` for you Character subclass"
+    enc.play self
   end
 end
 
@@ -41,8 +46,8 @@ class Knight < Character
   end
 
   ## YOUR CODE HERE
-  def play_out_encounter enc
-    enc.encounter_knight self
+  def play_special enc
+    enc.play_knight self
   end
 
   def damage dam
@@ -72,8 +77,8 @@ class Wizard < Character
   end
 
   ## YOUR CODE HERE
-  def play_out_encounter enc
-    enc.encounter_wizard self
+  def play_special enc
+    enc.play_wizard self
   end
 
   def use_spell spell_mp
@@ -116,11 +121,15 @@ class FloorTrap < Encounter
   end
 
   ## YOUR CODE HERE
-  def encounter_knight knight
+  def play char
+    char.play_special self
+  end
+
+  def play_knight knight
     knight.damage @dam
   end
 
-  def encounter_wizard wizard
+  def play_wizard wizard
     wizard.try_fly_over_trap self
   end
 end
@@ -140,11 +149,15 @@ class Monster < Encounter
   end
 
   ## YOUR CODE HERE
-  def encounter_knight knight
+  def play char
+    char.play_special self
+  end
+
+  def play_knight knight
     knight.damage @dam
   end
 
-  def encounter_wizard wizard
+  def play_wizard wizard
     wizard.fight_monster self
   end
 end
@@ -163,12 +176,8 @@ class Potion < Encounter
   end
 
   ## YOUR CODE HERE
-  def encounter_knight knight
-    knight.drink_potion self
-  end
-
-  def encounter_wizard wizard
-    wizard.drink_potion self
+  def play char
+    char.drink_potion self
   end
 end
 
@@ -185,13 +194,8 @@ class Armor < Encounter
   end
 
   ## YOUR CODE HERE
-  def encounter_knight knight
-    knight.armor_up self
-  end
-
-  def encounter_wizard wizard
-    # nothing to do here, just processing wizard to the next step
-    wizard
+  def play char
+    char.armor_up self
   end
 end
 
