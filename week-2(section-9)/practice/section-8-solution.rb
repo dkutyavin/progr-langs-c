@@ -19,6 +19,10 @@ class Character
     @hp = @hp - dam
   end
 
+  def drink_potion potion
+    @hp = @hp + potion.hp
+  end
+
   private
 
   def play_out_encounter enc
@@ -50,10 +54,6 @@ class Knight < Character
       super dam - @ap
       @ap = 0
     end
-  end
-
-  def drink_potion potion
-    @hp = @hp + potion.hp
   end
 
   def armor_up armor
@@ -99,8 +99,8 @@ class Wizard < Character
   end
 
   def drink_potion potion
-    @hp = @hp + potion.hp
     @mp = @mp + potion.mp
+    super potion
   end
 end
 
