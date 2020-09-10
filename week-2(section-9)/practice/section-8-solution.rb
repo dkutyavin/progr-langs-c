@@ -15,11 +15,14 @@ class Character
     @hp <= 0
   end
 
+  def damage dam
+    @hp = @hp - dam
+  end
+
   private
 
   def play_out_encounter enc
     raise "You should implement `play_out_encounter` for you Character subclass"
-    ## YOUR CODE HERE
   end
 end
 
@@ -40,11 +43,11 @@ class Knight < Character
 
   def damage dam
     if @ap == 0
-      @hp = @hp - dam
+      super dam
     elsif @ap > dam
       @ap = @ap - dam
     else 
-      @hp = @hp - dam
+      super dam - @ap
       @ap = 0
     end
   end
@@ -75,10 +78,6 @@ class Wizard < Character
 
   def use_spell spell_mp
     @mp = @mp - spell_mp
-  end
-
-  def damage dam
-    @hp = @hp - dam
   end
 
   def try_fly_over_trap trap
@@ -203,7 +202,7 @@ alonzo_the_wise = Wizard.new(3, 50)
 dhuwe_the_unready = Wizard.new(8, 5)
 
 if __FILE__ == $0
-  Adventure.new(Stdout.new, alonzo_the_wise,
+  Adventure.new(Stdout.new, sir_foldalot,
     [Monster.new(1, 1),
     FloorTrap.new(3),
     Monster.new(5, 3),
